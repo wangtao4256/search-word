@@ -6,4 +6,7 @@ import lombok.Data;
 public class Product {
     private String productName;
     private String price;
+    private String img;
+    //店铺
+    private String shop;
 }

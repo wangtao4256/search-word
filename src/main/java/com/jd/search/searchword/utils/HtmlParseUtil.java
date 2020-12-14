@@ -34,17 +34,29 @@ public class HtmlParseUtil {
 
         String url = "https://search.jd.com/Search?keyword=" + keyword + "&page=" + page;
         Document document = Jsoup.parse(new URL(url), 30000);
-
+        if (null == document) {
+            return Lists.newArrayList();
+        }
         Element element = document.getElementById("J_goodsList");
+        if (null==element) {
+            return Lists.newArrayList();
+        }
         Elements elementList = element.getElementsByTag("li");
-
+        if (elementList.isEmpty()) {
+            return Lists.newArrayList();
+        }
         List<Product> productList = Lists.newArrayList();
         for (Element element1 : elementList) {
             Product product = new Product();
+            String img = element1.getElementsByTag("img").eq(0).attr("data-lazy-img");
             String price = element1.getElementsByClass("p-price").eq(0).text();
             String productName = element1.getElementsByClass("p-name").eq(0).text();
+            String shop = element1.getElementsByClass("p-shop").eq(0).text();
+
             product.setPrice(price);
             product.setProductName(productName);
+            product.setShop(shop);
+            product.setImg(img);
             productList.add(product);
         }
         return productList;

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -16,6 +17,8 @@ public class SearchTest {
 
     @Test
     public void addData() throws IOException {
-        List<Product> boo = productService.searchProducts("wangtao");
+        System.out.println(new Date());
+        productService.addProducts("键盘", 100);
+        System.out.println(new Date());
     }
 }
