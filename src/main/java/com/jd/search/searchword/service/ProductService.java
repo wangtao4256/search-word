@@ -15,6 +15,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -57,8 +58,8 @@ public class ProductService {
         SearchRequest request = new SearchRequest("jd_product");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         List<Product> products = Lists.newArrayList();
-        TermQueryBuilder termQuery = new TermQueryBuilder("productName", keyword);
-        searchSourceBuilder.query(termQuery);
+        MatchQueryBuilder matchQuery = new MatchQueryBuilder("productName", keyword);
+        searchSourceBuilder.query(matchQuery);
 
         HighlightBuilder highlightBuilder = new HighlightBuilder();
         highlightBuilder.field("productName");
