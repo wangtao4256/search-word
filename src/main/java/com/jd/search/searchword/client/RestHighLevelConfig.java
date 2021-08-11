@@ -1,4 +1,4 @@
-package com.jd.search.searchword.Client;
+package com.jd.search.searchword.client;
 
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;

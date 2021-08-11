@@ -2,6 +2,7 @@ package com.jd.search.searchword.service;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
+import com.jd.search.searchword.config.EsConfig;
 import com.jd.search.searchword.entity.Product;
 import com.jd.search.searchword.utils.HtmlParseUtil;
 import org.bson.types.ObjectId;
@@ -17,6 +18,7 @@ import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.TermQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -36,6 +38,8 @@ import java.util.Map;
 public class ProductService {
     @Autowired
     private RestHighLevelClient restHighLevelClient;
+    @Autowired
+    EsConfig esConfig;
 
     public Boolean addProducts(String keyword, Integer pageNo) throws IOException {
         List<Product> products = HtmlParseUtil.batchQueryJdProduct(keyword, pageNo);
@@ -58,8 +62,10 @@ public class ProductService {
         SearchRequest request = new SearchRequest("jd_product");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         List<Product> products = Lists.newArrayList();
+
         MatchQueryBuilder matchQuery = new MatchQueryBuilder("productName", keyword);
         searchSourceBuilder.query(matchQuery);
+        searchSourceBuilder.query(QueryBuilders.regexpQuery("productName", ".*" + keyword + ".*"));
 
         HighlightBuilder highlightBuilder = new HighlightBuilder();
         highlightBuilder.field("productName");
